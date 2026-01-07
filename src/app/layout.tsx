@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: {
     default: siteMetadata.title,
-    template: "%s | FullstackGuide",
+    template: "%s | Open Stack JS",
   },
   description: siteMetadata.description,
   metadataBase: new URL(siteMetadata.url),
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: siteMetadata.description,
     url: siteMetadata.url,
-    siteName: "FullstackGuide",
+      siteName: "Open Stack JS",
     type: "website",
   },
   twitter: {

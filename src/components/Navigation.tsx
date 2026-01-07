@@ -29,14 +29,14 @@ export default function Navigation({
           <Link 
             href="/" 
             className="text-2xl font-bold gradient-text hover:scale-105 transition-transform focus:outline-none focus:ring-2 focus:ring-purple-500 rounded-lg px-2"
-            aria-label="FullstackGuide Home"
+            aria-label="Open Stack JS Home"
           >
-            FullstackGuide
+            Open Stack JS
           </Link>
           
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com/khaleedbinaziz1/fullstackguide"
+              href="https://github.com/khaleedbinaziz1/openstackjs"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"

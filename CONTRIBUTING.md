@@ -1,6 +1,6 @@
-# Contributing to FullstackGuide
+# Contributing to Open Stack JS
 
-Thank you for your interest in contributing to FullstackGuide! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to Open Stack JS! This document provides guidelines and instructions for contributing.
 
 ## 🤝 How to Contribute
 
@@ -25,8 +25,8 @@ We welcome suggestions for new features or improvements! Please:
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/khaleedbinaziz1/fullstackguide.git
-   cd fullstackguide
+   git clone https://github.com/khaleedbinaziz1/openstackjs.git
+   cd openstackjs
    ```
 
 2. **Create a feature branch**
@@ -97,6 +97,6 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ## 🙏 Thank You!
 
-Your contributions help make FullstackGuide better for everyone. Thank you for taking the time to contribute!
+Your contributions help make Open Stack JS better for everyone. Thank you for taking the time to contribute!
 
 

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const siteMetadata = {
-  title: "Fullstack Web Development Guide - Visual Learning Platform",
+  title: "Open Stack JS - Fullstack Web Development Guide - Visual Learning Platform",
   description: "Learn fullstack web development through visual explanations. Master frontend, backend, databases, testing, DevOps, and more with comprehensive guides and interactive examples.",
-  url: "https://fullstackguide.com",
+  url: "https://openstackjs.com",
   ogImage: "/og-image.png",
 };
 
@@ -13,18 +13,18 @@ export function generatePageMetadata(
   path?: string
 ): Metadata {
   return {
-    title: `${title} | FullstackGuide`,
+    title: `${title} | Open Stack JS`,
     description,
     openGraph: {
-      title: `${title} | FullstackGuide`,
+      title: `${title} | Open Stack JS`,
       description,
       url: path ? `${siteMetadata.url}${path}` : siteMetadata.url,
-      siteName: "FullstackGuide",
+      siteName: "Open Stack JS",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | FullstackGuide`,
+      title: `${title} | Open Stack JS`,
       description,
     },
   };

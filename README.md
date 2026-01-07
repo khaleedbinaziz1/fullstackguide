@@ -1,7 +1,7 @@
-# FullstackGuide
+# Open Stack JS
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/khaleedbinaziz1/fullstackguide)
+[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/khaleedbinaziz1/openstackjs)
 
 A comprehensive **open source** visual learning platform for mastering fullstack web development.
 
@@ -52,7 +52,7 @@ npm start
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/khaleedbinaziz1/fullstackguide/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/khaleedbinaziz1/openstackjs/issues).
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
