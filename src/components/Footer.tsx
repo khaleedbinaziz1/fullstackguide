@@ -29,7 +29,7 @@ export default function Footer() {
   };
 
   const socialLinks = [
-    { name: 'GitHub', icon: SiGithub, href: 'https://github.com', color: 'hover:text-gray-300' },
+    { name: 'GitHub', icon: SiGithub, href: 'https://github.com/khaleedbinaziz1/fullstackguide', color: 'hover:text-gray-300' },
     { name: 'X (Twitter)', icon: FaXTwitter, href: 'https://twitter.com', color: 'hover:text-gray-300' },
     { name: 'LinkedIn', icon: SiLinkedin, href: 'https://linkedin.com', color: 'hover:text-blue-500' },
     { name: 'Discord', icon: SiDiscord, href: 'https://discord.com', color: 'hover:text-indigo-400' },
@@ -63,10 +63,24 @@ export default function Footer() {
                 </div>
                 <span className="text-2xl font-bold gradient-text">FullstackGuide</span>
               </Link>
-              <p className="text-white/60 text-sm leading-relaxed mb-6 max-w-md">
+              <p className="text-white/60 text-sm leading-relaxed mb-4 max-w-md">
                 Master fullstack web development with visual guides, interactive examples, and comprehensive documentation. 
                 Learn how technologies work together.
               </p>
+              <div className="mb-6">
+                <a
+                  href="https://github.com/khaleedbinaziz1/fullstackguide"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-white/70 hover:text-white text-sm font-medium"
+                >
+                  <SiGithub className="w-4 h-4" />
+                  <span>Open Source on GitHub</span>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
               <div className="flex items-center gap-4">
                 {socialLinks.map((social) => {
                   const Icon = social.icon;
@@ -159,10 +173,15 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-white/40 text-sm">
                 <p>
-                  © {currentYear} FullstackGuide. All rights reserved.
+                  © {currentYear} FullstackGuide. Open Source under MIT License.
                 </p>
                 <p className="mt-1">
                   Built with Next.js, React, and Tailwind CSS
+                </p>
+                <p className="mt-1">
+                  <a href="https://github.com/khaleedbinaziz1/fullstackguide" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline">
+                    Contribute on GitHub
+                  </a>
                 </p>
               </div>
               

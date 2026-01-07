@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SiGithub } from "react-icons/si";
 
 interface NavigationProps {
   showBackButton?: boolean;
@@ -33,7 +34,18 @@ export default function Navigation({
             FullstackGuide
           </Link>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/khaleedbinaziz1/fullstackguide"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              aria-label="View on GitHub"
+              title="Open Source on GitHub"
+            >
+              <SiGithub className="w-5 h-5" />
+            </a>
+            
             {!isHomePage && (
               <Link 
                 href="/" 
