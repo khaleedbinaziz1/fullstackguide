@@ -25,17 +25,57 @@ export default function CodeExample({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Escape HTML entities (works in both client and server)
+  const escapeHtml = (text: string) => {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  };
+
   // Simple syntax highlighting
   const highlightCode = (code: string, lang: string) => {
+    // First escape HTML to prevent XSS and ensure proper rendering
+    let highlighted = escapeHtml(code);
+    
     if (lang === 'typescript' || lang === 'tsx' || lang === 'jsx') {
-      return code
-        .replace(/(const|let|var|function|async|await|import|export|default|return|if|else|for|while|class|interface|type|extends|implements)/g, '<span class="text-blue-400">$1</span>')
-        .replace(/(string|number|boolean|void|any|unknown|undefined|null|true|false)/g, '<span class="text-purple-400">$1</span>')
-        .replace(/(\/\/.*$)/gm, '<span class="text-green-500 opacity-70">$1</span>')
-        .replace(/(['"`])(.*?)(['"`])/g, '<span class="text-yellow-300">$1$2$3</span>')
-        .replace(/(\{|\})/g, '<span class="text-pink-400">$1</span>');
+      // Split by lines to process comments separately
+      const lines = highlighted.split('\n');
+      const processedLines = lines.map(line => {
+        // Check if line has a comment
+        const commentIndex = line.indexOf('//');
+        let codePart = line;
+        let commentPart = '';
+        
+        if (commentIndex !== -1) {
+          codePart = line.substring(0, commentIndex);
+          commentPart = line.substring(commentIndex);
+        }
+        
+        // Highlight code part (avoiding strings for simplicity)
+        codePart = codePart
+          .replace(/\b(const|let|var|function|async|await|import|export|default|return|if|else|for|while|class|interface|type|extends|implements|typeof|instanceof|new|this|super)\b/g, '<span class="text-blue-400">$&</span>')
+          .replace(/\b(string|number|boolean|void|any|unknown|undefined|null|true|false)\b/g, '<span class="text-purple-400">$&</span>')
+          .replace(/(\{|\})/g, '<span class="text-pink-400">$&</span>')
+          .replace(/(['"`])([^'"`]*?)(['"`])/g, '<span class="text-yellow-300">$&</span>');
+        
+        // Highlight comment
+        if (commentPart) {
+          commentPart = `<span class="text-green-500 opacity-70">${commentPart}</span>`;
+        }
+        
+        return codePart + commentPart;
+      });
+      
+      highlighted = processedLines.join('\n');
+    } else if (lang === 'html') {
+      // Basic HTML highlighting
+      highlighted = highlighted.replace(/(&lt;\/?[a-zA-Z][^&]*&gt;)/g, '<span class="text-blue-400">$1</span>');
     }
-    return code;
+    
+    return highlighted;
   };
 
   return (

@@ -19,6 +19,7 @@ export default function NextJSPage() {
     { id: 'caching', title: 'Caching' },
     { id: 'api-routes', title: 'API Routes' },
     { id: 'deployment', title: 'Deployment' },
+    { id: 'challenges', title: 'Coding Challenges' },
   ];
 
   return (
@@ -78,6 +79,7 @@ export default function NextJSPage() {
               {activeSection === 'caching' && <CachingSection />}
               {activeSection === 'api-routes' && <APIRoutesSection />}
               {activeSection === 'deployment' && <DeploymentSection />}
+              {activeSection === 'challenges' && <NextJSChallengesSection />}
             </div>
           </div>
         </div>
@@ -861,6 +863,546 @@ EXPOSE 3000
 ENV PORT 3000
 CMD ["node", "server.js"]`}
       />
+    </div>
+  );
+}
+
+// Challenges Section
+function NextJSChallengesSection() {
+  return (
+    <div className="space-y-12">
+      <div>
+        <h2 className="text-4xl font-bold text-white mb-4">Next.js Coding Challenges</h2>
+        <p className="text-white/60 text-lg mb-8">
+          Practice Next.js 14 with App Router, Server Components, and API Routes through these challenges.
+        </p>
+      </div>
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 1: Dynamic Routes"
+        description="Create a blog system with dynamic routes for individual blog posts."
+        requirements={[
+          "Create app/blog/[slug]/page.tsx for dynamic routes",
+          "Fetch blog post data based on slug parameter",
+          "Display post title, content, and date",
+          "Handle 404 for non-existent posts"
+        ]}
+        starterCode={`// app/blog/[slug]/page.tsx
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function BlogPost({ params }: PageProps) {
+  // TODO: Fetch and display blog post
+  return <div>{/* Blog post content */}</div>;
+}`}
+        solution={`// app/blog/[slug]/page.tsx
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+interface BlogPost {
+  slug: string;
+  title: string;
+  content: string;
+  date: string;
+}
+
+export default async function BlogPost({ params }: PageProps) {
+  // In real app, fetch from database or API
+  const post: BlogPost | null = await getPostBySlug(params.slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  return (
+    <article className="max-w-4xl mx-auto p-6">
+      <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+      <p className="text-gray-600 mb-6">{post.date}</p>
+      <div className="prose">{post.content}</div>
+    </article>
+  );
+}
+
+async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  // Mock data - replace with actual API call
+  const posts: BlogPost[] = [
+    {
+      slug: 'hello-world',
+      title: 'Hello World',
+      content: 'This is my first blog post...',
+      date: '2024-01-01'
+    }
+  ];
+  return posts.find(p => p.slug === slug) || null;
+}`}
+      />
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 2: Server Component Data Fetching"
+        description="Create a products page that fetches data in a Server Component."
+        requirements={[
+          "Create app/products/page.tsx as Server Component",
+          "Fetch products from an API",
+          "Display products in a grid layout",
+          "Add loading.tsx for loading state"
+        ]}
+        starterCode={`// app/products/page.tsx
+export default async function ProductsPage() {
+  // TODO: Fetch products
+  return <div>{/* Products grid */}</div>;
+}`}
+        solution={`// app/products/page.tsx
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+}
+
+export default async function ProductsPage() {
+  const products = await fetch('https://api.example.com/products', {
+    next: { revalidate: 3600 } // Revalidate every hour
+  }).then(res => res.json());
+
+  return (
+    <div className="container mx-auto p-6">
+      <h1 className="text-4xl font-bold mb-8">Products</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {products.map((product: Product) => (
+          <div key={product.id} className="border rounded-lg p-4">
+            <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded mb-4" />
+            <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
+            <p className="text-2xl font-bold">${product.price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// app/products/loading.tsx
+export default function Loading() {
+  return (
+    <div className="container mx-auto p-6">
+      <div className="animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="border rounded-lg p-4">
+              <div className="w-full h-48 bg-gray-200 rounded mb-4"></div>
+              <div className="h-6 bg-gray-200 rounded mb-2"></div>
+              <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 3: API Route Handler"
+        description="Create a RESTful API for managing todos using Next.js Route Handlers."
+        requirements={[
+          "Create app/api/todos/route.ts with GET and POST handlers",
+          "Create app/api/todos/[id]/route.ts with PUT and DELETE handlers",
+          "Use proper HTTP status codes",
+          "Validate request data"
+        ]}
+        starterCode={`// app/api/todos/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+// TODO: Implement GET and POST handlers
+export async function GET(request: NextRequest) {
+  // Return all todos
+}
+
+export async function POST(request: NextRequest) {
+  // Create new todo
+}`}
+        solution={`// app/api/todos/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+// In-memory store (use database in production)
+let todos: Todo[] = [
+  { id: 1, text: 'Learn Next.js', completed: false },
+  { id: 2, text: 'Build an app', completed: false }
+];
+
+export async function GET(request: NextRequest) {
+  return NextResponse.json(todos);
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    
+    if (!body.text || typeof body.text !== 'string') {
+      return NextResponse.json(
+        { error: 'Text is required' },
+        { status: 400 }
+      );
+    }
+
+    const newTodo: Todo = {
+      id: Date.now(),
+      text: body.text,
+      completed: false
+    };
+
+    todos.push(newTodo);
+    return NextResponse.json(newTodo, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Invalid request body' },
+      { status: 400 }
+    );
+  }
+}
+
+// app/api/todos/[id]/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = parseInt(params.id);
+  const todo = todos.find(t => t.id === id);
+
+  if (!todo) {
+    return NextResponse.json(
+      { error: 'Todo not found' },
+      { status: 404 }
+    );
+  }
+
+  const body = await request.json();
+  Object.assign(todo, body);
+
+  return NextResponse.json(todo);
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const id = parseInt(params.id);
+  const index = todos.findIndex(t => t.id === id);
+
+  if (index === -1) {
+    return NextResponse.json(
+      { error: 'Todo not found' },
+      { status: 404 }
+    );
+  }
+
+  todos.splice(index, 1);
+  return NextResponse.json({ success: true });
+}`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 4: Client & Server Components"
+        description="Build a page that combines Server Components for data fetching and Client Components for interactivity."
+        requirements={[
+          "Create Server Component that fetches data",
+          "Create Client Component for interactive features",
+          "Pass data from Server to Client Component",
+          "Use proper 'use client' directive"
+        ]}
+        starterCode={`// app/dashboard/page.tsx (Server Component)
+export default async function DashboardPage() {
+  // TODO: Fetch data and render Client Component
+  return <div>{/* Dashboard */}</div>;
+}
+
+// components/InteractiveChart.tsx (Client Component)
+'use client';
+// TODO: Create interactive chart component`}
+        solution={`// app/dashboard/page.tsx (Server Component)
+import InteractiveChart from '@/components/InteractiveChart';
+
+interface DashboardData {
+  sales: number[];
+  labels: string[];
+}
+
+export default async function DashboardPage() {
+  // Fetch data in Server Component
+  const data: DashboardData = await fetch('https://api.example.com/dashboard', {
+    cache: 'no-store'
+  }).then(res => res.json());
+
+  return (
+    <div className="container mx-auto p-6">
+      <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
+      {/* Pass data to Client Component */}
+      <InteractiveChart data={data} />
+    </div>
+  );
+}
+
+// components/InteractiveChart.tsx (Client Component)
+'use client';
+
+import { useState } from 'react';
+
+interface DashboardData {
+  sales: number[];
+  labels: string[];
+}
+
+export default function InteractiveChart({ data }: { data: DashboardData }) {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  return (
+    <div className="bg-white rounded-lg p-6 shadow-lg">
+      <h2 className="text-2xl font-bold mb-4">Sales Chart</h2>
+      <div className="flex items-end gap-2 h-64">
+        {data.sales.map((value, index) => (
+          <div
+            key={index}
+            className="flex-1 bg-blue-500 rounded-t cursor-pointer hover:bg-blue-600 transition-colors"
+            style={{ height: \`\${(value / Math.max(...data.sales)) * 100}%\` }}
+            onClick={() => setSelectedIndex(index)}
+            onMouseEnter={() => setSelectedIndex(index)}
+            onMouseLeave={() => setSelectedIndex(null)}
+          >
+            {selectedIndex === index && (
+              <div className="text-center text-white font-bold">
+                {data.labels[index]}: ${value}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Advanced"
+        title="Challenge 5: Middleware & Authentication"
+        description="Create middleware to protect routes and implement authentication flow."
+        requirements={[
+          "Create middleware.ts to protect routes",
+          "Create login page with form",
+          "Create API route for authentication",
+          "Use cookies to manage session",
+          "Redirect based on auth status"
+        ]}
+        starterCode={`// middleware.ts
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  // TODO: Implement route protection
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: '/dashboard/:path*',
+};`}
+        solution={`// middleware.ts
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const token = request.cookies.get('auth-token');
+
+  // Protect dashboard routes
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  // Redirect authenticated users away from login
+  if (request.nextUrl.pathname === '/login' && token) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/dashboard/:path*', '/login'],
+};
+
+// app/api/auth/login/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+
+export async function POST(request: NextRequest) {
+  const { email, password } = await request.json();
+
+  // Validate credentials (replace with actual auth logic)
+  if (email === 'user@example.com' && password === 'password') {
+    const cookieStore = await cookies();
+    cookieStore.set('auth-token', 'valid-token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7 // 7 days
+    });
+
+    return NextResponse.json({ success: true });
+  }
+
+  return NextResponse.json(
+    { error: 'Invalid credentials' },
+    { status: 401 }
+  );
+}
+
+// app/login/page.tsx
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      router.push('/dashboard');
+    } else {
+      setError('Invalid credentials');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h1 className="text-2xl font-bold mb-6">Login</h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          className="w-full px-4 py-2 border rounded mb-4"
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          className="w-full px-4 py-2 border rounded mb-4"
+          required
+        />
+        <button
+          type="submit"
+          className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  );
+}`}
+      />
+    </div>
+  );
+}
+
+// Challenge Card Component (same as React challenges)
+function ChallengeCard({ 
+  level, 
+  title, 
+  description, 
+  requirements, 
+  starterCode, 
+  solution 
+}: {
+  level: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  starterCode: string;
+  solution: string;
+}) {
+  const [showSolution, setShowSolution] = useState(false);
+  const levelColors = {
+    Beginner: 'from-green-500 to-emerald-500',
+    Intermediate: 'from-yellow-500 to-orange-500',
+    Advanced: 'from-red-500 to-pink-500',
+  };
+
+  return (
+    <div className="glass rounded-2xl p-6 border border-white/10">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${levelColors[level as keyof typeof levelColors]} text-white text-sm font-semibold`}>
+          {level}
+        </div>
+        <h3 className="text-2xl font-bold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-white/70 mb-6">{description}</p>
+      
+      <div className="mb-6">
+        <h4 className="text-white font-semibold mb-3">Requirements:</h4>
+        <ul className="space-y-2">
+          {requirements.map((req, idx) => (
+            <li key={idx} className="text-white/60 flex items-start gap-2">
+              <span className="text-gray-300 mt-1">•</span>
+              <span>{req}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mb-4">
+        <h4 className="text-white font-semibold mb-3">Starter Code:</h4>
+        <CodeExample language="tsx" code={starterCode} />
+      </div>
+
+      <button
+        onClick={() => setShowSolution(!showSolution)}
+        className="mb-4 px-4 py-2 bg-gray-600/20 hover:bg-gray-600/30 text-gray-300 rounded-lg transition-colors"
+      >
+        {showSolution ? 'Hide Solution' : 'Show Solution'}
+      </button>
+
+      {showSolution && (
+        <div>
+          <h4 className="text-white font-semibold mb-3">Solution:</h4>
+          <CodeExample language="tsx" code={solution} />
+        </div>
+      )}
     </div>
   );
 }

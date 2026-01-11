@@ -14,6 +14,7 @@ export default function FramerPage() {
     { id: 'layout', title: 'Layout Animations' },
     { id: 'variants', title: 'Variants' },
     { id: 'advanced', title: 'Advanced' },
+    { id: 'challenges', title: 'Coding Challenges' },
   ];
 
   return (
@@ -81,6 +82,7 @@ export default function FramerPage() {
               {activeSection === 'layout' && <LayoutSection />}
               {activeSection === 'variants' && <VariantsSection />}
               {activeSection === 'advanced' && <AdvancedSection />}
+              {activeSection === 'challenges' && <FramerChallengesSection />}
             </div>
           </div>
         </div>
@@ -650,6 +652,361 @@ function OptimizedComponent() {
   );
 }`}
       />
+    </div>
+  );
+}
+
+// Challenges Section
+function FramerChallengesSection() {
+  return (
+    <div className="space-y-12">
+      <div>
+        <h2 className="text-4xl font-bold text-white mb-4">Framer Motion Coding Challenges</h2>
+        <p className="text-white/60 text-lg mb-8">
+          Practice creating smooth animations and interactions with Framer Motion.
+        </p>
+      </div>
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 1: Animated Card with Hover"
+        description="Create a card component that animates on hover with scale and shadow effects."
+        requirements={[
+          "Card should scale up on hover",
+          "Add shadow animation",
+          "Smooth color transition",
+          "Use whileHover and whileTap props"
+        ]}
+        starterCode={`import { motion } from 'framer-motion';
+
+function AnimatedCard() {
+  // TODO: Create animated card
+  return <div>Card</div>;
+}`}
+        solution={`import { motion } from 'framer-motion';
+
+function AnimatedCard() {
+  return (
+    <motion.div
+      className="w-64 p-6 bg-white rounded-lg shadow-md"
+      whileHover={{
+        scale: 1.05,
+        boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+        backgroundColor: "#f0f0f0"
+      }}
+      whileTap={{
+        scale: 0.95
+      }}
+      transition={{
+        duration: 0.3,
+        ease: "easeInOut"
+      }}
+    >
+      <h3 className="text-xl font-bold mb-2">Animated Card</h3>
+      <p className="text-gray-600">
+        Hover over this card to see smooth animations!
+      </p>
+    </motion.div>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 2: Fade In List"
+        description="Create a list that fades in items one by one with a stagger effect."
+        requirements={[
+          "Items should fade in sequentially",
+          "Use variants for animation states",
+          "Implement staggerChildren",
+          "Items should slide up while fading"
+        ]}
+        starterCode={`import { motion } from 'framer-motion';
+
+const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+
+function AnimatedList() {
+  // TODO: Create staggered list animation
+  return <ul>{/* List items */}</ul>;
+}`}
+        solution={`import { motion } from 'framer-motion';
+
+const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.5
+    }
+  }
+};
+
+function AnimatedList() {
+  return (
+    <motion.ul
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="space-y-4"
+    >
+      {items.map((item, index) => (
+        <motion.li
+          key={index}
+          variants={item}
+          className="p-4 bg-blue-500 text-white rounded-lg"
+        >
+          {item}
+        </motion.li>
+      ))}
+    </motion.ul>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 3: Drag and Drop List"
+        description="Create a draggable list where items can be reordered by dragging."
+        requirements={[
+          "Items should be draggable",
+          "Visual feedback while dragging",
+          "Smooth reordering animation",
+          "Snap back if dropped outside valid area"
+        ]}
+        starterCode={`import { motion } from 'framer-motion';
+
+function DraggableList() {
+  // TODO: Create draggable list
+  return <div>{/* Draggable items */}</div>;
+}`}
+        solution={`import { motion, Reorder } from 'framer-motion';
+import { useState } from 'react';
+
+const initialItems = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+
+function DraggableList() {
+  const [items, setItems] = useState(initialItems);
+
+  return (
+    <Reorder.Group
+      axis="y"
+      values={items}
+      onReorder={setItems}
+      className="space-y-4"
+    >
+      {items.map((item) => (
+        <Reorder.Item
+          key={item}
+          value={item}
+          whileDrag={{
+            scale: 1.1,
+            boxShadow: "0 10px 20px rgba(0,0,0,0.2)"
+          }}
+          className="p-4 bg-purple-500 text-white rounded-lg cursor-grab active:cursor-grabbing"
+        >
+          {item}
+        </Reorder.Item>
+      ))}
+    </Reorder.Group>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 4: Scroll Progress Indicator"
+        description="Create a progress bar that shows scroll progress and animates based on scroll position."
+        requirements={[
+          "Use useScroll hook to track scroll progress",
+          "Transform scroll progress to width/scale",
+          "Smooth animation as user scrolls",
+          "Fixed position at top of page"
+        ]}
+        starterCode={`import { motion, useScroll, useTransform } from 'framer-motion';
+
+function ScrollProgress() {
+  // TODO: Create scroll progress indicator
+  return <div>{/* Progress bar */}</div>;
+}`}
+        solution={`import { motion, useScroll, useTransform } from 'framer-motion';
+
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const width = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-1 bg-gray-200 z-50"
+    >
+      <motion.div
+        className="h-full bg-gradient-to-r from-blue-500 to-purple-600"
+        style={{ width }}
+      />
+    </motion.div>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Advanced"
+        title="Challenge 5: Modal with Shared Layout"
+        description="Create a modal that uses shared layout animations to smoothly transition from a list item."
+        requirements={[
+          "List items that can open as modal",
+          "Shared layoutId for smooth transition",
+          "Backdrop with blur effect",
+          "Close animation"
+        ]}
+        starterCode={`import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+
+function ModalList() {
+  // TODO: Create modal with shared layout
+  return <div>{/* List and modal */}</div>;
+}`}
+        solution={`import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+
+const items = [
+  { id: 1, title: 'Item 1', content: 'Content 1' },
+  { id: 2, title: 'Item 2', content: 'Content 2' },
+  { id: 3, title: 'Item 3', content: 'Content 3' },
+];
+
+function ModalList() {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  return (
+    <>
+      <div className="grid grid-cols-3 gap-4 p-6">
+        {items.map((item) => (
+          <motion.div
+            key={item.id}
+            layoutId={item.id.toString()}
+            onClick={() => setSelectedId(item.id)}
+            className="p-6 bg-white rounded-lg shadow-lg cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+          >
+            <h3 className="text-xl font-bold">{item.title}</h3>
+          </motion.div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {selectedId && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+            onClick={() => setSelectedId(null)}
+          >
+            <motion.div
+              layoutId={selectedId.toString()}
+              className="bg-white rounded-lg p-8 max-w-md w-full mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-2xl font-bold mb-4">
+                {items.find(i => i.id === selectedId)?.title}
+              </h2>
+              <p className="text-gray-600 mb-4">
+                {items.find(i => i.id === selectedId)?.content}
+              </p>
+              <button
+                onClick={() => setSelectedId(null)}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}`}
+      />
+    </div>
+  );
+}
+
+// Challenge Card Component
+function ChallengeCard({ 
+  level, 
+  title, 
+  description, 
+  requirements, 
+  starterCode, 
+  solution 
+}: {
+  level: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  starterCode: string;
+  solution: string;
+}) {
+  const [showSolution, setShowSolution] = useState(false);
+  const levelColors = {
+    Beginner: 'from-green-500 to-emerald-500',
+    Intermediate: 'from-yellow-500 to-orange-500',
+    Advanced: 'from-red-500 to-pink-500',
+  };
+
+  return (
+    <div className="glass rounded-2xl p-6 border border-white/10">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${levelColors[level as keyof typeof levelColors]} text-white text-sm font-semibold`}>
+          {level}
+        </div>
+        <h3 className="text-2xl font-bold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-white/70 mb-6">{description}</p>
+      
+      <div className="mb-6">
+        <h4 className="text-white font-semibold mb-3">Requirements:</h4>
+        <ul className="space-y-2">
+          {requirements.map((req, idx) => (
+            <li key={idx} className="text-white/60 flex items-start gap-2">
+              <span className="text-pink-400 mt-1">•</span>
+              <span>{req}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mb-4">
+        <h4 className="text-white font-semibold mb-3">Starter Code:</h4>
+        <CodeExample language="jsx" code={starterCode} />
+      </div>
+
+      <button
+        onClick={() => setShowSolution(!showSolution)}
+        className="mb-4 px-4 py-2 bg-pink-500/20 hover:bg-pink-500/30 text-pink-400 rounded-lg transition-colors"
+      >
+        {showSolution ? 'Hide Solution' : 'Show Solution'}
+      </button>
+
+      {showSolution && (
+        <div>
+          <h4 className="text-white font-semibold mb-3">Solution:</h4>
+          <CodeExample language="jsx" code={solution} />
+        </div>
+      )}
     </div>
   );
 }

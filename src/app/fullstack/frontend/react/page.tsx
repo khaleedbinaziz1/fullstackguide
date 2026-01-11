@@ -18,6 +18,7 @@ export default function ReactPage() {
     { id: 'managing-state', title: 'Managing State' },
     { id: 'escape-hatches', title: 'Escape Hatches' },
     { id: 'thinking-react', title: 'Thinking in React' },
+    { id: 'challenges', title: 'Coding Challenges' },
   ];
 
   return (
@@ -76,6 +77,7 @@ export default function ReactPage() {
               {activeSection === 'managing-state' && <ManagingStateSection />}
               {activeSection === 'escape-hatches' && <EscapeHatchesSection />}
               {activeSection === 'thinking-react' && <ThinkingReactSection />}
+              {activeSection === 'challenges' && <ReactChallengesSection />}
             </div>
           </div>
         </div>
@@ -1073,6 +1075,627 @@ function App() {
 // Data flows down via props
 // Events flow up via callbacks`}
       />
+    </div>
+  );
+}
+
+// Challenges Section
+function ReactChallengesSection() {
+  return (
+    <div className="space-y-12">
+      <div>
+        <h2 className="text-4xl font-bold text-white mb-4">React Coding Challenges</h2>
+        <p className="text-white/60 text-lg mb-8">
+          Practice React with these hands-on challenges. Build real components and learn React patterns.
+        </p>
+      </div>
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 1: Counter Component"
+        description="Create a counter component with increment, decrement, and reset functionality."
+        requirements={[
+          "Use useState hook to manage count state",
+          "Add three buttons: Increment, Decrement, Reset",
+          "Display the current count value",
+          "Add visual feedback on button clicks"
+        ]}
+        starterCode={`import { useState } from 'react';
+
+function Counter() {
+  // TODO: Add state and handlers
+  
+  return (
+    <div>
+      {/* Your counter UI here */}
+    </div>
+  );
+}`}
+        solution={`import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => setCount(count + 1);
+  const decrement = () => setCount(count - 1);
+  const reset = () => setCount(0);
+
+  return (
+    <div className="text-center p-6">
+      <h2 className="text-3xl font-bold mb-4">Count: {count}</h2>
+      <div className="flex gap-4 justify-center">
+        <button 
+          onClick={increment}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Increment
+        </button>
+        <button 
+          onClick={decrement}
+          className="px-4 py-2 bg-red-500 text-white rounded"
+        >
+          Decrement
+        </button>
+        <button 
+          onClick={reset}
+          className="px-4 py-2 bg-gray-500 text-white rounded"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 2: Todo List"
+        description="Build a simple todo list where users can add and remove tasks."
+        requirements={[
+          "Use useState to manage list of todos",
+          "Create input field to add new todos",
+          "Display list of todos",
+          "Add delete button for each todo",
+          "Prevent adding empty todos"
+        ]}
+        starterCode={`import { useState } from 'react';
+
+function TodoList() {
+  // TODO: Implement todo list
+  
+  return (
+    <div>
+      {/* Your todo list UI here */}
+    </div>
+  );
+}`}
+        solution={`import { useState } from 'react';
+
+interface Todo {
+  id: number;
+  text: string;
+}
+
+function TodoList() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState('');
+
+  const addTodo = () => {
+    if (input.trim()) {
+      setTodos([...todos, { id: Date.now(), text: input }]);
+      setInput('');
+    }
+  };
+
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  return (
+    <div className="p-6 max-w-md mx-auto">
+      <div className="flex gap-2 mb-4">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+          className="flex-1 px-4 py-2 border rounded"
+          placeholder="Add a todo..."
+        />
+        <button 
+          onClick={addTodo}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Add
+        </button>
+      </div>
+      <ul className="space-y-2">
+        {todos.map(todo => (
+          <li 
+            key={todo.id}
+            className="flex items-center justify-between p-2 bg-gray-100 rounded"
+          >
+            <span>{todo.text}</span>
+            <button 
+              onClick={() => deleteTodo(todo.id)}
+              className="px-3 py-1 bg-red-500 text-white rounded text-sm"
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 3: Form with Validation"
+        description="Create a registration form with validation for name, email, and password."
+        requirements={[
+          "Use useState for form fields",
+          "Add validation for email format",
+          "Password must be at least 8 characters",
+          "Show error messages for invalid fields",
+          "Disable submit button when form is invalid"
+        ]}
+        starterCode={`import { useState } from 'react';
+
+function RegistrationForm() {
+  // TODO: Implement form with validation
+  
+  return (
+    <form>
+      {/* Your form fields here */}
+    </form>
+  );
+}`}
+        solution={`import { useState } from 'react';
+
+function RegistrationForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validateEmail = (email: string) => {
+    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    
+    if (!validateEmail(formData.email)) {
+      newErrors.email = 'Invalid email format';
+    }
+    
+    if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      console.log('Form submitted:', formData);
+      // Handle form submission
+    }
+  };
+
+  const isFormValid = formData.name && validateEmail(formData.email) && formData.password.length >= 8;
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6">
+      <div className="mb-4">
+        <label className="block mb-2">Name</label>
+        <input
+          type="text"
+          value={formData.name}
+          onChange={(e) => handleChange('name', e.target.value)}
+          className="w-full px-4 py-2 border rounded"
+        />
+        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+      </div>
+      
+      <div className="mb-4">
+        <label className="block mb-2">Email</label>
+        <input
+          type="email"
+          value={formData.email}
+          onChange={(e) => handleChange('email', e.target.value)}
+          className="w-full px-4 py-2 border rounded"
+        />
+        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+      </div>
+      
+      <div className="mb-4">
+        <label className="block mb-2">Password</label>
+        <input
+          type="password"
+          value={formData.password}
+          onChange={(e) => handleChange('password', e.target.value)}
+          className="w-full px-4 py-2 border rounded"
+        />
+        {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+      </div>
+      
+      <button
+        type="submit"
+        disabled={!isFormValid}
+        className="w-full px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+      >
+        Register
+      </button>
+    </form>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 4: Custom Hook"
+        description="Create a custom hook for fetching data from an API and use it in a component."
+        requirements={[
+          "Create useFetch custom hook",
+          "Handle loading, error, and data states",
+          "Use useEffect for API calls",
+          "Create a component that uses the hook",
+          "Display loading and error states"
+        ]}
+        starterCode={`import { useState, useEffect } from 'react';
+
+// TODO: Create useFetch hook
+function useFetch(url: string) {
+  // Your hook implementation
+}
+
+// TODO: Use the hook in a component
+function UserProfile() {
+  // Use the hook here
+  return <div>{/* Display user data */}</div>;
+}`}
+        solution={`import { useState, useEffect } from 'react';
+
+interface FetchState<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+}
+
+function useFetch<T>(url: string): FetchState<T> {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const json = await response.json();
+        setData(json);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+// Using the hook
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+function UserProfile() {
+  const { data, loading, error } = useFetch<User>('https://api.example.com/user/1');
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return <div>No data</div>;
+
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">{data.name}</h2>
+      <p className="text-gray-600">{data.email}</p>
+    </div>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Advanced"
+        title="Challenge 5: Context API"
+        description="Create a theme context and use it to toggle between light and dark modes across multiple components."
+        requirements={[
+          "Create ThemeContext with createContext",
+          "Create ThemeProvider component",
+          "Implement theme toggle functionality",
+          "Use useContext in child components",
+          "Persist theme preference in localStorage"
+        ]}
+        starterCode={`import { createContext, useContext, useState, useEffect } from 'react';
+
+// TODO: Create ThemeContext and Provider
+// TODO: Create components that use the theme
+
+function App() {
+  return (
+    <div>
+      {/* Your app with theme provider */}
+    </div>
+  );
+}`}
+        solution={`import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+type Theme = 'light' | 'dark';
+
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(() => {
+    const saved = localStorage.getItem('theme');
+    return (saved as Theme) || 'light';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useTheme() {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within ThemeProvider');
+  }
+  return context;
+}
+
+// Using the theme
+function Header() {
+  const { theme, toggleTheme } = useTheme();
+  
+  return (
+    <header className={\`p-4 \${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-black'}\`}>
+      <button onClick={toggleTheme}>
+        Switch to {theme === 'light' ? 'dark' : 'light'} mode
+      </button>
+    </header>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <Header />
+      <div className="p-6">
+        {/* Your app content */}
+      </div>
+    </ThemeProvider>
+  );
+}`}
+      />
+
+      <ChallengeCard
+        level="Advanced"
+        title="Challenge 6: Memoization & Performance"
+        description="Optimize a component that renders a large list using React.memo, useMemo, and useCallback."
+        requirements={[
+          "Create a component that renders a large list (1000+ items)",
+          "Use React.memo to prevent unnecessary re-renders",
+          "Use useMemo for expensive calculations",
+          "Use useCallback for event handlers",
+          "Measure performance improvements"
+        ]}
+        starterCode={`import { useState, useMemo, useCallback } from 'react';
+
+interface Item {
+  id: number;
+  name: string;
+  price: number;
+}
+
+function ItemList({ items }: { items: Item[] }) {
+  // TODO: Optimize this component
+  const total = items.reduce((sum, item) => sum + item.price, 0);
+  
+  return (
+    <div>
+      <p>Total: ${total}</p>
+      <ul>
+        {items.map(item => (
+          <ItemComponent key={item.id} item={item} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ItemComponent({ item }: { item: Item }) {
+  // TODO: Memoize this component
+  return <li>{item.name} - ${item.price}</li>;
+}`}
+        solution={`import { useState, useMemo, useCallback, memo } from 'react';
+
+interface Item {
+  id: number;
+  name: string;
+  price: number;
+}
+
+function ItemList({ items }: { items: Item[] }) {
+  // Memoize expensive calculation
+  const total = useMemo(() => {
+    return items.reduce((sum, item) => sum + item.price, 0);
+  }, [items]);
+
+  // Memoize callback
+  const handleItemClick = useCallback((id: number) => {
+    console.log('Item clicked:', id);
+  }, []);
+
+  return (
+    <div className="p-6">
+      <p className="text-xl font-bold mb-4">Total: ${total.toFixed(2)}</p>
+      <ul className="space-y-2">
+        {items.map(item => (
+          <MemoizedItemComponent 
+            key={item.id} 
+            item={item} 
+            onClick={handleItemClick}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Memoize component to prevent unnecessary re-renders
+const MemoizedItemComponent = memo(function ItemComponent({ 
+  item, 
+  onClick 
+}: { 
+  item: Item; 
+  onClick: (id: number) => void;
+}) {
+  return (
+    <li 
+      onClick={() => onClick(item.id)}
+      className="p-2 bg-gray-100 rounded cursor-pointer hover:bg-gray-200"
+    >
+      {item.name} - ${item.price.toFixed(2)}
+    </li>
+  );
+});
+
+// Usage
+function App() {
+  const [items] = useState<Item[]>(() => 
+    Array.from({ length: 1000 }, (_, i) => ({
+      id: i,
+      name: \`Item \${i + 1}\`,
+      price: Math.random() * 100
+    }))
+  );
+
+  return <ItemList items={items} />;
+}`}
+      />
+    </div>
+  );
+}
+
+// Challenge Card Component
+function ChallengeCard({ 
+  level, 
+  title, 
+  description, 
+  requirements, 
+  starterCode, 
+  solution 
+}: {
+  level: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  starterCode: string;
+  solution: string;
+}) {
+  const [showSolution, setShowSolution] = useState(false);
+  const levelColors = {
+    Beginner: 'from-green-500 to-emerald-500',
+    Intermediate: 'from-yellow-500 to-orange-500',
+    Advanced: 'from-red-500 to-pink-500',
+  };
+
+  return (
+    <div className="glass rounded-2xl p-6 border border-white/10">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${levelColors[level as keyof typeof levelColors]} text-white text-sm font-semibold`}>
+          {level}
+        </div>
+        <h3 className="text-2xl font-bold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-white/70 mb-6">{description}</p>
+      
+      <div className="mb-6">
+        <h4 className="text-white font-semibold mb-3">Requirements:</h4>
+        <ul className="space-y-2">
+          {requirements.map((req, idx) => (
+            <li key={idx} className="text-white/60 flex items-start gap-2">
+              <span className="text-cyan-400 mt-1">•</span>
+              <span>{req}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mb-4">
+        <h4 className="text-white font-semibold mb-3">Starter Code:</h4>
+        <CodeExample language="jsx" code={starterCode} />
+      </div>
+
+      <button
+        onClick={() => setShowSolution(!showSolution)}
+        className="mb-4 px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg transition-colors"
+      >
+        {showSolution ? 'Hide Solution' : 'Show Solution'}
+      </button>
+
+      {showSolution && (
+        <div>
+          <h4 className="text-white font-semibold mb-3">Solution:</h4>
+          <CodeExample language="jsx" code={solution} />
+        </div>
+      )}
     </div>
   );
 }

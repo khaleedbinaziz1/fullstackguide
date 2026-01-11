@@ -36,7 +36,7 @@ export default function Navigation({
           
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com/khaleedbinaziz1/openstackjs"
+              href="https://github.com/khaleedbinaziz1/open-stack-js"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"

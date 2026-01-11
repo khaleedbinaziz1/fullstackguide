@@ -14,6 +14,7 @@ export default function ReduxPage() {
     { id: 'async', title: 'Async Logic' },
     { id: 'rtk-query', title: 'RTK Query' },
     { id: 'patterns', title: 'Best Practices' },
+    { id: 'challenges', title: 'Coding Challenges' },
   ];
 
   return (
@@ -81,6 +82,7 @@ export default function ReduxPage() {
               {activeSection === 'async' && <AsyncSection />}
               {activeSection === 'rtk-query' && <RTKQuerySection />}
               {activeSection === 'patterns' && <PatternsSection />}
+              {activeSection === 'challenges' && <ReduxChallengesSection />}
             </div>
           </div>
         </div>
@@ -584,6 +586,341 @@ function ConceptCard({ title, description, color }: { title: string; description
     <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6">
       <h3 className="text-purple-400 font-semibold mb-2">{title}</h3>
       <p className="text-white/60 text-sm">{description}</p>
+    </div>
+  );
+}
+
+// Challenges Section
+function ReduxChallengesSection() {
+  return (
+    <div className="space-y-12">
+      <div>
+        <h2 className="text-4xl font-bold text-white mb-4">Redux Coding Challenges</h2>
+        <p className="text-white/60 text-lg mb-8">
+          Practice Redux Toolkit with these challenges. Build state management solutions from scratch.
+        </p>
+      </div>
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 1: Shopping Cart Slice"
+        description="Create a Redux slice for managing a shopping cart with add, remove, and update quantity actions."
+        requirements={[
+          "Create cartSlice with addItem, removeItem, updateQuantity actions",
+          "State should store array of items with id, name, price, quantity",
+          "Calculate total price using selector",
+          "Handle edge cases (negative quantities, duplicate items)"
+        ]}
+        starterCode={`import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+// TODO: Create cartSlice`}
+        solution={`import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface CartState {
+  items: CartItem[];
+}
+
+const initialState: CartState = {
+  items: [],
+};
+
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState,
+  reducers: {
+    addItem: (state, action: PayloadAction<Omit<CartItem, 'quantity'>>) => {
+      const existingItem = state.items.find(item => item.id === action.payload.id);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.items.push({ ...action.payload, quantity: 1 });
+      }
+    },
+    removeItem: (state, action: PayloadAction<number>) => {
+      state.items = state.items.filter(item => item.id !== action.payload);
+    },
+    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
+      const item = state.items.find(item => item.id === action.payload.id);
+      if (item) {
+        if (action.payload.quantity <= 0) {
+          state.items = state.items.filter(i => i.id !== action.payload.id);
+        } else {
+          item.quantity = action.payload.quantity;
+        }
+      }
+    },
+    clearCart: (state) => {
+      state.items = [];
+    },
+  },
+});
+
+export const { addItem, removeItem, updateQuantity, clearCart } = cartSlice.actions;
+export default cartSlice.reducer;
+
+// Selector
+export const selectCartTotal = (state: { cart: CartState }) => {
+  return state.cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+};`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 2: Async Thunk for User Authentication"
+        description="Create async thunks for user login and logout with proper error handling."
+        requirements={[
+          "Create loginAsync thunk that calls API",
+          "Handle pending, fulfilled, and rejected states",
+          "Store user data and token in state",
+          "Create logout action"
+        ]}
+        starterCode={`import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+// TODO: Create async thunks and slice`}
+        solution={`import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+
+interface User {
+  id: number;
+  email: string;
+  name: string;
+}
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: AuthState = {
+  user: null,
+  token: null,
+  loading: false,
+  error: null,
+};
+
+// Async Thunk
+export const loginAsync = createAsyncThunk(
+  'auth/login',
+  async (credentials: { email: string; password: string }) => {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Login failed');
+    }
+    
+    return response.json();
+  }
+);
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.error = null;
+    },
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(loginAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Login failed';
+      });
+  },
+});
+
+export const { logout, clearError } = authSlice.actions;
+export default authSlice.reducer;`}
+      />
+
+      <ChallengeCard
+        level="Advanced"
+        title="Challenge 3: RTK Query API"
+        description="Create a complete RTK Query API for a blog with CRUD operations and caching."
+        requirements={[
+          "Create API with getPosts, getPost, createPost, updatePost, deletePost",
+          "Implement proper tags for cache invalidation",
+          "Add optimistic updates",
+          "Handle loading and error states"
+        ]}
+        starterCode={`import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+// TODO: Create blog API`}
+        solution={`import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  author: string;
+  createdAt: string;
+}
+
+export const blogApi = createApi({
+  reducerPath: 'blogApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.example.com/' }),
+  tagTypes: ['Post'],
+  endpoints: (builder) => ({
+    getPosts: builder.query<Post[], void>({
+      query: () => 'posts',
+      providesTags: ['Post'],
+    }),
+    getPost: builder.query<Post, number>({
+      query: (id) => \`posts/\${id}\`,
+      providesTags: (result, error, id) => [{ type: 'Post', id }],
+    }),
+    createPost: builder.mutation<Post, Omit<Post, 'id' | 'createdAt'>>({
+      query: (body) => ({
+        url: 'posts',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Post'],
+      // Optimistic update
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          blogApi.util.updateQueryData('getPosts', undefined, (draft) => {
+            draft.push({
+              ...arg,
+              id: Date.now(),
+              createdAt: new Date().toISOString(),
+            } as Post);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+    }),
+    updatePost: builder.mutation<Post, { id: number; data: Partial<Post> }>({
+      query: ({ id, data }) => ({
+        url: \`posts/\${id}\`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Post', id }],
+    }),
+    deletePost: builder.mutation<void, number>({
+      query: (id) => ({
+        url: \`posts/\${id}\`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Post'],
+    }),
+  }),
+});
+
+export const {
+  useGetPostsQuery,
+  useGetPostQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+} = blogApi;`}
+      />
+    </div>
+  );
+}
+
+// Challenge Card Component
+function ChallengeCard({ 
+  level, 
+  title, 
+  description, 
+  requirements, 
+  starterCode, 
+  solution 
+}: {
+  level: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  starterCode: string;
+  solution: string;
+}) {
+  const [showSolution, setShowSolution] = useState(false);
+  const levelColors = {
+    Beginner: 'from-green-500 to-emerald-500',
+    Intermediate: 'from-yellow-500 to-orange-500',
+    Advanced: 'from-red-500 to-pink-500',
+  };
+
+  return (
+    <div className="glass rounded-2xl p-6 border border-white/10">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${levelColors[level as keyof typeof levelColors]} text-white text-sm font-semibold`}>
+          {level}
+        </div>
+        <h3 className="text-2xl font-bold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-white/70 mb-6">{description}</p>
+      
+      <div className="mb-6">
+        <h4 className="text-white font-semibold mb-3">Requirements:</h4>
+        <ul className="space-y-2">
+          {requirements.map((req, idx) => (
+            <li key={idx} className="text-white/60 flex items-start gap-2">
+              <span className="text-purple-400 mt-1">•</span>
+              <span>{req}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mb-4">
+        <h4 className="text-white font-semibold mb-3">Starter Code:</h4>
+        <CodeExample language="typescript" code={starterCode} />
+      </div>
+
+      <button
+        onClick={() => setShowSolution(!showSolution)}
+        className="mb-4 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded-lg transition-colors"
+      >
+        {showSolution ? 'Hide Solution' : 'Show Solution'}
+      </button>
+
+      {showSolution && (
+        <div>
+          <h4 className="text-white font-semibold mb-3">Solution:</h4>
+          <CodeExample language="typescript" code={solution} />
+        </div>
+      )}
     </div>
   );
 }

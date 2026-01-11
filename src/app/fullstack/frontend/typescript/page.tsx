@@ -19,6 +19,7 @@ export default function TypeScriptPage() {
     { id: 'classes', title: 'Classes' },
     { id: 'generics', title: 'Generics' },
     { id: 'advanced', title: 'Advanced Types' },
+    { id: 'challenges', title: 'Coding Challenges' },
   ];
 
   return (
@@ -78,6 +79,7 @@ export default function TypeScriptPage() {
               {activeSection === 'classes' && <ClassesSection />}
               {activeSection === 'generics' && <GenericsSection />}
               {activeSection === 'advanced' && <AdvancedTypesSection />}
+              {activeSection === 'challenges' && <ChallengesSection />}
             </div>
           </div>
         </div>
@@ -733,6 +735,327 @@ function process(value: string | number) {
   return value * 2;
 }`}
       />
+    </div>
+  );
+}
+
+// Challenges Section
+function ChallengesSection() {
+  return (
+    <div className="space-y-12">
+      <div>
+        <h2 className="text-4xl font-bold text-white mb-4">TypeScript Coding Challenges</h2>
+        <p className="text-white/60 text-lg mb-8">
+          Practice TypeScript with these progressive challenges. Start with basics and work your way up to advanced concepts.
+        </p>
+      </div>
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 1: Type Annotations"
+        description="Create a function that calculates the area of a rectangle. Add proper type annotations for parameters and return type."
+        requirements={[
+          "Function should accept width (number) and height (number)",
+          "Return type should be explicitly typed as number",
+          "Handle edge cases (negative numbers, zero)"
+        ]}
+        starterCode={`// Your code here
+function calculateArea(width, height) {
+  // TODO: Add type annotations and implementation
+}
+
+// Test cases
+console.log(calculateArea(5, 10)); // Should return 50
+console.log(calculateArea(3, 7)); // Should return 21`}
+        solution={`function calculateArea(width: number, height: number): number {
+  if (width <= 0 || height <= 0) {
+    throw new Error('Width and height must be positive numbers');
+  }
+  return width * height;
+}
+
+// Test cases
+console.log(calculateArea(5, 10)); // 50
+console.log(calculateArea(3, 7)); // 21`}
+      />
+
+      <ChallengeCard
+        level="Beginner"
+        title="Challenge 2: Interface Definition"
+        description="Create an interface for a User object and a function that validates user data."
+        requirements={[
+          "Define User interface with id (number), name (string), email (string), and age (optional number)",
+          "Create a function that accepts a User object and returns boolean",
+          "Validate that name and email are not empty"
+        ]}
+        starterCode={`// Define User interface here
+
+// Create validation function here
+function validateUser(user) {
+  // TODO: Implement validation
+}
+
+// Test cases
+const validUser = { id: 1, name: "John", email: "john@example.com" };
+const invalidUser = { id: 2, name: "", email: "invalid" };
+console.log(validateUser(validUser)); // Should return true
+console.log(validateUser(invalidUser)); // Should return false`}
+        solution={`interface User {
+  id: number;
+  name: string;
+  email: string;
+  age?: number;
+}
+
+function validateUser(user: User): boolean {
+  return user.name.trim().length > 0 && 
+         user.email.trim().length > 0 &&
+         user.email.includes('@');
+}
+
+// Test cases
+const validUser: User = { id: 1, name: "John", email: "john@example.com" };
+const invalidUser: User = { id: 2, name: "", email: "invalid" };
+console.log(validateUser(validUser)); // true
+console.log(validateUser(invalidUser)); // false`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 3: Generic Functions"
+        description="Create a generic function that can work with arrays of any type, implementing common array operations."
+        requirements={[
+          "Create a generic function getFirst that returns the first element of an array",
+          "Create a generic function filterBy that filters array based on a predicate function",
+          "Use proper generic constraints where needed"
+        ]}
+        starterCode={`// Generic getFirst function
+function getFirst(items) {
+  // TODO: Implement
+}
+
+// Generic filterBy function
+function filterBy(items, predicate) {
+  // TODO: Implement
+}
+
+// Test cases
+const numbers = [1, 2, 3, 4, 5];
+const strings = ["apple", "banana", "cherry"];
+
+console.log(getFirst(numbers)); // Should return 1
+console.log(getFirst(strings)); // Should return "apple"
+console.log(filterBy(numbers, (n) => n > 2)); // Should return [3, 4, 5]`}
+        solution={`function getFirst<T>(items: T[]): T | undefined {
+  return items.length > 0 ? items[0] : undefined;
+}
+
+function filterBy<T>(items: T[], predicate: (item: T) => boolean): T[] {
+  return items.filter(predicate);
+}
+
+// Test cases
+const numbers = [1, 2, 3, 4, 5];
+const strings = ["apple", "banana", "cherry"];
+
+console.log(getFirst(numbers)); // 1
+console.log(getFirst(strings)); // "apple"
+console.log(filterBy(numbers, (n) => n > 2)); // [3, 4, 5]`}
+      />
+
+      <ChallengeCard
+        level="Intermediate"
+        title="Challenge 4: Union Types & Type Guards"
+        description="Create a function that handles different types of input using union types and type guards."
+        requirements={[
+          "Create a function that accepts string | number | boolean",
+          "Return different formatted strings based on input type",
+          "Use type guards to narrow the type"
+        ]}
+        starterCode={`function formatValue(value) {
+  // TODO: Implement with type guards
+}
+
+// Test cases
+console.log(formatValue("hello")); // Should return "String: hello"
+console.log(formatValue(42)); // Should return "Number: 42"
+console.log(formatValue(true)); // Should return "Boolean: true"`}
+        solution={`function formatValue(value: string | number | boolean): string {
+  if (typeof value === 'string') {
+    return \`String: \${value}\`;
+  } else if (typeof value === 'number') {
+    return \`Number: \${value}\`;
+  } else {
+    return \`Boolean: \${value}\`;
+  }
+}
+
+// Test cases
+console.log(formatValue("hello")); // "String: hello"
+console.log(formatValue(42)); // "Number: 42"
+console.log(formatValue(true)); // "Boolean: true"`}
+      />
+
+      <ChallengeCard
+        level="Advanced"
+        title="Challenge 5: Utility Types"
+        description="Create a function that updates user data using TypeScript utility types."
+        requirements={[
+          "Use Partial<T> to allow partial updates",
+          "Use Pick<T> to select specific fields",
+          "Create a function that merges user data safely"
+        ]}
+        starterCode={`interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+  role: 'admin' | 'user';
+}
+
+// TODO: Create updateUser function using utility types
+function updateUser(user, updates) {
+  // Implement safe update
+}
+
+// Test case
+const user = { id: 1, name: "John", email: "john@example.com", age: 30, role: 'user' as const };
+const updates = { name: "Jane", age: 31 };
+console.log(updateUser(user, updates));`}
+        solution={`interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+  role: 'admin' | 'user';
+}
+
+type UserUpdate = Partial<Pick<User, 'name' | 'email' | 'age'>>;
+
+function updateUser(user: User, updates: UserUpdate): User {
+  return {
+    ...user,
+    ...updates,
+  };
+}
+
+// Test case
+const user: User = { id: 1, name: "John", email: "john@example.com", age: 30, role: 'user' };
+const updates: UserUpdate = { name: "Jane", age: 31 };
+console.log(updateUser(user, updates));
+// { id: 1, name: "Jane", email: "john@example.com", age: 31, role: 'user' }`}
+      />
+
+      <ChallengeCard
+        level="Advanced"
+        title="Challenge 6: Conditional Types"
+        description="Create a type system that extracts return types from functions conditionally."
+        requirements={[
+          "Create a conditional type that extracts return type from functions",
+          "Handle non-function types gracefully",
+          "Use it in a practical example"
+        ]}
+        starterCode={`// TODO: Create ExtractReturnType conditional type
+
+// Test cases
+type Func1 = () => string;
+type Func2 = (x: number) => boolean;
+type Func3 = string;
+
+type Return1 = ExtractReturnType<Func1>; // Should be string
+type Return2 = ExtractReturnType<Func2>; // Should be boolean
+type Return3 = ExtractReturnType<Func3>; // Should be never`}
+        solution={`type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+// Test cases
+type Func1 = () => string;
+type Func2 = (x: number) => boolean;
+type Func3 = string;
+
+type Return1 = ExtractReturnType<Func1>; // string
+type Return2 = ExtractReturnType<Func2>; // boolean
+type Return3 = ExtractReturnType<Func3>; // never
+
+// Practical example
+function getString(): string {
+  return "hello";
+}
+
+function getNumber(): number {
+  return 42;
+}
+
+type GetStringReturn = ExtractReturnType<typeof getString>; // string
+type GetNumberReturn = ExtractReturnType<typeof getNumber>; // number`}
+      />
+    </div>
+  );
+}
+
+// Challenge Card Component
+function ChallengeCard({ 
+  level, 
+  title, 
+  description, 
+  requirements, 
+  starterCode, 
+  solution 
+}: {
+  level: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  starterCode: string;
+  solution: string;
+}) {
+  const [showSolution, setShowSolution] = useState(false);
+  const levelColors = {
+    Beginner: 'from-green-500 to-emerald-500',
+    Intermediate: 'from-yellow-500 to-orange-500',
+    Advanced: 'from-red-500 to-pink-500',
+  };
+
+  return (
+    <div className="glass rounded-2xl p-6 border border-white/10">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`px-3 py-1 rounded-full bg-gradient-to-r ${levelColors[level as keyof typeof levelColors]} text-white text-sm font-semibold`}>
+          {level}
+        </div>
+        <h3 className="text-2xl font-bold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-white/70 mb-6">{description}</p>
+      
+      <div className="mb-6">
+        <h4 className="text-white font-semibold mb-3">Requirements:</h4>
+        <ul className="space-y-2">
+          {requirements.map((req, idx) => (
+            <li key={idx} className="text-white/60 flex items-start gap-2">
+              <span className="text-blue-400 mt-1">•</span>
+              <span>{req}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mb-4">
+        <h4 className="text-white font-semibold mb-3">Starter Code:</h4>
+        <CodeExample language="typescript" code={starterCode} />
+      </div>
+
+      <button
+        onClick={() => setShowSolution(!showSolution)}
+        className="mb-4 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-colors"
+      >
+        {showSolution ? 'Hide Solution' : 'Show Solution'}
+      </button>
+
+      {showSolution && (
+        <div>
+          <h4 className="text-white font-semibold mb-3">Solution:</h4>
+          <CodeExample language="typescript" code={solution} />
+        </div>
+      )}
     </div>
   );
 }

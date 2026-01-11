@@ -143,7 +143,7 @@ export default function Home() {
                     ✨ Visual Learning Platform
                   </span>
                   <a 
-                    href="https://github.com/khaleedbinaziz1/openstackjs" 
+                    href="https://github.com/khaleedbinaziz1/open-stack-js" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 text-xs font-medium tracking-wider transition-all"
